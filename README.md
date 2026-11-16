@@ -1,22 +1,24 @@
-# SynthCore
+# SynthCore 🛒
 
-A **local-first** collaborative workspace. It holds Kanban boards and rich-text documents that several people can edit at once, and it keeps working offline.
+A **local-first, shared family shopping list that understands recipes.**
+
+Paste a link to a recipe video and AI extracts the ingredients. They wait under **Pending Approval**, grouped by recipe, so you approve only what you don't already have at home. Approved items join the shared list, sorted by supermarket aisle. Everyone in the household sees changes instantly. Everything works **offline** in the supermarket and syncs with **no conflicts** once you reconnect, because the data is stored in a **CRDT** (Yjs).
 
 ## Roadmap (one step at a time)
 
 | # | Step | What you learn |
 |---|------|----------------|
-| 0 | ✅ Project setup (Vite + React + TypeScript) | Tooling, project structure, dev server |
-| 1 | A Kanban board that lives only in React state | Components, props, `useState`, TypeScript types |
-| 2 | Move the board's data into a **Yjs** document | What a CRDT is and why merges never conflict |
+| 0 | ✅ Project setup (Vite + React + TypeScript) | Tooling, project structure |
+| 1 | ✅ The list UI in React state: Pending → List → Bought | Components, props, `useState`, types |
+| 2 | Move the data into a **Yjs** document (CRDT) | What a CRDT is and why merges never conflict |
 | 3 | Save locally with **IndexedDB** (`y-indexeddb`) | Local-first and offline persistence |
-| 4 | A **WebSocket sync server** in Node | Real-time sync between browsers |
-| 5 | A **document editor** with Tiptap on the same engine | Reusing the sync layer for a second data type |
-| 6 | **Presence**: live cursors and who's online (Yjs Awareness) | Ephemeral state vs. persisted state |
-| 7 | **Postgres + Drizzle**: persist on the server, list workspaces | SQL, ORMs, migrations, Docker |
-| 8 | **Auth** (Better Auth) and permissions | Sessions, securing WebSockets |
-| 9 | **Time travel**: a history slider | Snapshots and CRDT state vectors |
-| 10 | **Sync metrics panel**: online/offline, bytes, latency | Observability |
+| 4 | A **WebSocket sync server** in Node | Real-time sync between devices |
+| 5 | **Presence**: "Dana is shopping now 🛒" | Ephemeral vs. persisted state |
+| 6 | **AI recipe extraction** (YouTube transcripts or pasted text → Claude API → JSON) | Calling LLMs, structured output, server APIs |
+| 7 | **Smart merging**: duplicates and quantities | Data modeling and edge cases |
+| 8 | **Postgres + Drizzle**: store lists on the server | SQL, ORMs, migrations, Docker |
+| 9 | **Auth + households** (Better Auth, invites) | Sessions, permissions, securing WebSockets |
+| 10 | **History** (time travel) and a **sync status** panel | Snapshots, observability |
 | 11 | Deploy | Production builds, hosting |
 
 ## Run it
