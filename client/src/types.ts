@@ -25,4 +25,5 @@ export type Item = {
   aisle: Aisle;
   status: ItemStatus;
   recipe?: string; // "?" = optional. Only items that came from a recipe have it.
+  createdAt: number; // timestamp, used to keep the same order on every device
 };

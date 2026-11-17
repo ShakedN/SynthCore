@@ -26,3 +26,7 @@ button:hover { background: #f0f0f0; }
 .add-form input, .add-form select { padding: 8px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; }
 .add-form input:first-child { flex: 1; min-width: 0; }
 .add-form .qty { width: 60px; }
+
+.header-actions { display: flex; gap: 6px; }
+button.online { border-color: #3a3; }
+button.offline { border-color: #d33; background: #fff0f0; }
