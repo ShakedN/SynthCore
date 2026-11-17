@@ -1,17 +1,21 @@
 import http from "node:http";
 import { WebSocketServer } from "ws";
-import { setupWSConnection } from "@y/websocket-server/utils";
+import { setupWSConnection, setPersistence } from "@y/websocket-server/utils";
+import { config } from "./config.js";
+import { db, sql } from "./db/client.js";
+import { createDocStore } from "./persistence/docStore.js";
+import { createYjsPersistence } from "./persistence/yjsPersistence.js";
 
-// The sync server. Its only job right now: relay Yjs updates between devices.
+// The sync server: relays Yjs updates between devices AND saves every update
+// to Postgres, so the list survives even if every device is offline or wiped.
 //
-//   phone ──┐                 ┌── laptop
-//           └── WebSocket ── server ── WebSocket ┘
-//
-// Each "room" (the path in the URL, e.g. ws://host:1234/household-demo) is one
-// shared Y.Doc. The server keeps its OWN copy of each doc in memory, so a device
-// that connects later still gets the full list, even if no other device is online.
+//   phone ──┐                         ┌── laptop
+//           └── WebSocket ── server ──┘
+//                              │
+//                          Postgres
 
-const PORT = Number(process.env.PORT ?? 1234);
+const persistence = createYjsPersistence(createDocStore(db));
+setPersistence(persistence);
 
 // A plain HTTP server. We use it for a health check, and the WebSocket server
 // "upgrades" connections on the same port.
@@ -38,6 +42,18 @@ wss.on("connection", (socket, req) => {
   setupWSConnection(socket, req);
 });
 
-httpServer.listen(PORT, "0.0.0.0", () => {
-  console.log(`[sync] listening on ws://localhost:${PORT}`);
+httpServer.listen(config.port, "0.0.0.0", () => {
+  console.log(`[sync] listening on ws://localhost:${config.port}`);
 });
+
+// Graceful shutdown: on Ctrl+C, finish saving before exiting.
+async function shutdown() {
+  console.log("[sync] shutting down, flushing pending writes…");
+  wss.close();
+  httpServer.close();
+  await persistence.flush();
+  await sql.end();
+  process.exit(0);
+}
+process.on("SIGINT", shutdown);
+process.on("SIGTERM", shutdown);
