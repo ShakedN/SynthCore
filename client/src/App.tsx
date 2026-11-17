@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useItems } from "./crdt/useItems";
 import * as actions from "./crdt/actions";
 import { setOnline } from "./crdt/tabSync";
+import { whenLoaded } from "./crdt/persistence";
 import { AddItemForm } from "./components/AddItemForm";
 import { PendingSection } from "./components/PendingSection";
 import { ShoppingList } from "./components/ShoppingList";
@@ -12,6 +13,13 @@ export default function App() {
   // Before: const [items, setItems] = useState(...)
   // Now:    the data lives in the Yjs document; this hook just reads it.
   const items = useItems();
+
+  // Wait until the saved list has been read from IndexedDB. Without this, the
+  // page would flash "Nothing to buy" for a moment before the items appear.
+  const [loaded, setLoaded] = useState(false);
+  useEffect(() => {
+    whenLoaded.then(() => setLoaded(true));
+  }, []);
 
   // Online/offline switch for the demo (simulates losing signal).
   const [online, setOnlineState] = useState(true);
@@ -24,6 +32,8 @@ export default function App() {
   const pending = items.filter((i) => i.status === "pending");
   const approved = items.filter((i) => i.status === "approved");
   const bought = items.filter((i) => i.status === "bought");
+
+  if (!loaded) return <div className="app">Loading your list…</div>;
 
   return (
     <div className="app">

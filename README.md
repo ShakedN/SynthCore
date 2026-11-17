@@ -10,8 +10,8 @@ Paste a link to a recipe video and AI extracts the ingredients. They wait under 
 |---|------|----------------|
 | 0 | ✅ Project setup (Vite + React + TypeScript) | Tooling, project structure |
 | 1 | ✅ The list UI in React state: Pending → List → Bought | Components, props, `useState`, types |
-| 2 | Move the data into a **Yjs** document (CRDT) | What a CRDT is and why merges never conflict |
-| 3 | Save locally with **IndexedDB** (`y-indexeddb`) | Local-first and offline persistence |
+| 2 | ✅ Move the data into a **Yjs** document (CRDT) | What a CRDT is and why merges never conflict |
+| 3 | ✅ Save locally with **IndexedDB** (`y-indexeddb`) | Local-first and offline persistence |
 | 4 | A **WebSocket sync server** in Node | Real-time sync between devices |
 | 5 | **Presence**: "Dana is shopping now 🛒" | Ephemeral vs. persisted state |
 | 6 | **AI recipe extraction** (YouTube transcripts or pasted text → Claude API → JSON) | Calling LLMs, structured output, server APIs |
