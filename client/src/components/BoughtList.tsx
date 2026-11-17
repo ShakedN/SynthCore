@@ -1,4 +1,4 @@
-import type { Item } from "../types";
+import type { Item } from "@synthcore/shared";
 
 type Props = {
   items: Item[]; // only items with status "bought"

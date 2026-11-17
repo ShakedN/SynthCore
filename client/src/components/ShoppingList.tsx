@@ -1,4 +1,4 @@
-import { AISLES, type Item } from "../types";
+import { AISLES, type Item } from "@synthcore/shared";
 
 type Props = {
   items: Item[]; // only items with status "approved"

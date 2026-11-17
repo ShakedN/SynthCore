@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useItems } from "./crdt/useItems";
 import * as actions from "./crdt/actions";
-import { setOnline } from "./crdt/tabSync";
+import { setOnline } from "./crdt/sync";
+import { useSyncStatus } from "./crdt/useSyncStatus";
 import { whenLoaded } from "./crdt/persistence";
 import { AddItemForm } from "./components/AddItemForm";
 import { PendingSection } from "./components/PendingSection";
@@ -21,12 +22,20 @@ export default function App() {
     whenLoaded.then(() => setLoaded(true));
   }, []);
 
-  // Online/offline switch for the demo (simulates losing signal).
-  const [online, setOnlineState] = useState(true);
+  // The REAL connection state, reported by the WebSocket provider.
+  const status = useSyncStatus();
+
+  // Whether the user WANTS to be online (the button simulates losing signal).
+  const [wantOnline, setWantOnline] = useState(true);
   function toggleOnline() {
-    setOnline(!online);
-    setOnlineState(!online);
+    setOnline(!wantOnline);
+    setWantOnline(!wantOnline);
   }
+  const statusLabel = !wantOnline
+    ? "🔴 Offline"
+    : status === "connected"
+      ? "🟢 Synced"
+      : "🟡 Connecting…"; // e.g. the server isn't running
 
   // Derived data, exactly as before
   const pending = items.filter((i) => i.status === "pending");
@@ -40,8 +49,12 @@ export default function App() {
       <header>
         <h1>SynthCore 🛒</h1>
         <div className="header-actions">
-          <button onClick={toggleOnline} className={online ? "online" : "offline"}>
-            {online ? "🟢 Online" : "🔴 Offline"}
+          <button
+            onClick={toggleOnline}
+            className={status === "connected" && wantOnline ? "online" : "offline"}
+            title="Click to simulate losing signal"
+          >
+            {statusLabel}
           </button>
           <button onClick={actions.addRecipe}>+ Add recipe (fake AI)</button>
         </div>

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { AISLES, type Aisle } from "../types";
+import { AISLES, type Aisle } from "@synthcore/shared";
 
 type Props = {
   onAdd: (name: string, quantity: string, aisle: Aisle) => void;

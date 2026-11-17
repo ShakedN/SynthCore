@@ -1,4 +1,4 @@
-import type { Aisle } from "./types";
+import type { Aisle } from "@synthcore/shared";
 
 // A stand-in for the AI. In Step 6 a real server will return data in this exact
 // shape after reading a recipe video. Building against a fake first lets us finish

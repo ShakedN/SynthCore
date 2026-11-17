@@ -12,7 +12,7 @@ Paste a link to a recipe video and AI extracts the ingredients. They wait under 
 | 1 | ✅ The list UI in React state: Pending → List → Bought | Components, props, `useState`, types |
 | 2 | ✅ Move the data into a **Yjs** document (CRDT) | What a CRDT is and why merges never conflict |
 | 3 | ✅ Save locally with **IndexedDB** (`y-indexeddb`) | Local-first and offline persistence |
-| 4 | A **WebSocket sync server** in Node | Real-time sync between devices |
+| 4 | ✅ A **WebSocket sync server** in Node | Real-time sync between devices |
 | 5 | **Presence**: "Dana is shopping now 🛒" | Ephemeral vs. persisted state |
 | 6 | **AI recipe extraction** (YouTube transcripts or pasted text → Claude API → JSON) | Calling LLMs, structured output, server APIs |
 | 7 | **Smart merging**: duplicates and quantities | Data modeling and edge cases |
@@ -23,8 +23,18 @@ Paste a link to a recipe video and AI extracts the ingredients. They wait under 
 
 ## Run it
 
+Requires Node 22+.
+
 ```bash
-cd client
-npm install
-npm run dev
+npm install      # from the repo root: installs every workspace
+npm run dev      # starts the sync server (:1234) and the web app (:5173)
+```
+
+## Project structure
+
+```
+SynthCore/
+├── client/            React web app (Vite)
+├── server/            Node sync server (WebSocket + Yjs)
+└── packages/shared/   Types shared by client and server
 ```

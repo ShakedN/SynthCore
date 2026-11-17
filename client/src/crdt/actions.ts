@@ -1,6 +1,6 @@
 import * as Y from "yjs";
 import { doc, itemsMap } from "./doc";
-import type { Aisle, ItemStatus } from "../types";
+import type { Aisle, ItemStatus } from "@synthcore/shared";
 import { FAKE_RECIPE } from "../fakeRecipe";
 
 // These replace the 7 functions that used to live in App.tsx.

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { itemsMap } from "./doc";
-import type { Item } from "../types";
+import type { Item } from "@synthcore/shared";
 
 // Turn the Yjs data into a plain array that React components understand.
 function readItems(): Item[] {
